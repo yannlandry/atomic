@@ -12,8 +12,8 @@
 
   var exports = {};
 
-  var config = {
-    contentType: 'application/x-www-form-urlencoded'
+  var headers = {
+    'Content-type': 'application/x-www-form-urlencoded'
   };
 
   var parse = function (req) {
@@ -36,7 +36,9 @@
     var request = new XHR('MSXML2.XMLHTTP.3.0');
 
     request.open(type, url, true);
-    request.setRequestHeader('Content-type', config.contentType);
+    for(var header in headers) {
+      request.setRequestHeader(header, headers[header]);
+    }
     request.onreadystatechange = function () {
       var req;
       if (request.readyState === 4) {
@@ -86,8 +88,12 @@
   };
 
   exports.setContentType = function(value) {
-    config.contentType = value;
+    headers['Content-type'] = value;
   };
+
+  exports.setCustomHeader = function(header, value) {
+    headers[header] = value;
+  }
 
   return exports;
 
